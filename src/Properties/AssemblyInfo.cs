@@ -28,7 +28,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ELF Builder")]
-[assembly: AssemblyCopyright("© AlphaNyne 2019")]
+[assembly: AssemblyCopyright("© coreizer 2019-2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

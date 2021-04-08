@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright (c) 2019 AlphaNyne
+ * Copyright (c) 2019-2021 coreizer
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ namespace ELFBuilder
       Console.ForegroundColor = ConsoleColor.Green;
       Console.WriteLine("+----------------------------+");
       Console.WriteLine("| Simple ELF to BIN Resigner |");
-      Console.WriteLine("| by AlphaNyne               |");
+      Console.WriteLine("| by coreizer                |");
       Console.WriteLine("| Version 2.3 Beta           |");
       Console.WriteLine("+----------------------------+\n");
 
