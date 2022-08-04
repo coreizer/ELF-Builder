@@ -1,85 +1,122 @@
-﻿/*
- * Copyright (c) 2019-2021 coreizer
- *
+﻿#region License Information (GPL v3)
+
+/**
+ * Copyright (C) 2022 coreizer
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Windows.Forms;
+#endregion
 
 namespace ELFBuilder
 {
-  public class Program
-  {
-    [MTAThread]
-    public static void Main(string[] args)
-    {
-      Console.ForegroundColor = ConsoleColor.Green;
-      Console.WriteLine("+----------------------------+");
-      Console.WriteLine("| Simple ELF to BIN Resigner |");
-      Console.WriteLine("| by coreizer                |");
-      Console.WriteLine("| Version 2.3 Beta           |");
-      Console.WriteLine("+----------------------------+\n");
+   using System;
+   using System.Diagnostics;
+   using System.IO;
+   using System.Linq;
+   using System.Reflection;
+   using System.Windows.Forms;
 
-      try {
-        if (args.Length < 1) {
-          throw new Exception("Unable to find *.elf file");
-        }
+   public class Program
+   {
+      private const string DEPENDENT_PROCESS = "make_fself.exe";
 
-        if (!args.Any(x => Path.GetExtension(x) == ".elf")) {
-          throw new FileLoadException("File extension is not allowed");
-        }
+      [MTAThread]
+      public static void Main(string[] args)
+      {
+         // Simple ELF to BIN Resigner
+         Console.ForegroundColor = ConsoleColor.Green;
+         Console.WriteLine("+--------------------+");
+         Console.WriteLine("| ELF-Builder        |");
+         Console.WriteLine("| by coreizer        |");
+         Console.WriteLine("| Version 2.3[BETA]  |");
+         Console.WriteLine("+-------------------+\n");
 
-        foreach (string arg in args) {
+         try {
+            if (args.Length < 1) {
+               throw new Exception("Error: File cannot be found.");
+            }
+            if (!args.Any(x => Path.GetExtension(x) == ".elf")) {
+               throw new FileLoadException("Error: Unable to open file or invalid the extension.");
+            }
 
-          string fileName = Path.GetFileName(arg);
-          string exportName = $"{DateTime.Now.Ticks}-{Path.ChangeExtension(fileName, "")}bin";
+            DependentExtract();
 
-          Console.WriteLine($"[INFO] Loaded filename: {fileName}");
-          Console.WriteLine($"[INFO] Export name: {exportName}\n");
+            foreach (string file in args) {
+               string name = Path.GetFileName(file);
+               string timestamp = $"{DateTime.Now.Ticks}--{Path.ChangeExtension(name, "")}bin";
 
-          ProcessStartInfo startInfo = new ProcessStartInfo {
-            FileName = "make_fself.exe",
-            WorkingDirectory = Application.StartupPath,
-            CreateNoWindow = false,
-            UseShellExecute = false,
-            Arguments = $"{fileName} {exportName}"
-          };
+               if (!File.Exists(DEPENDENT_PROCESS)) {
+                  throw new FileNotFoundException(DEPENDENT_PROCESS);
+               }
 
-          Process process = Process.Start(startInfo);
-          process.WaitForExit();
-          process.Close();
-        }
+               Process process = Process.Start(new ProcessStartInfo
+               {
+                  FileName = DEPENDENT_PROCESS,
+                  WorkingDirectory = Application.StartupPath,
+                  CreateNoWindow = false,
+                  UseShellExecute = false,
+                  Arguments = $"{name} {timestamp}"
+               });
+
+               process.WaitForExit();
+               process.Close();
+            }
+         }
+         catch (Exception ex) {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Error: {ex.Message}");
+         }
+         finally {
+            if (File.Exists(DEPENDENT_PROCESS)) {
+               File.Delete(DEPENDENT_PROCESS);
+            }
+         }
+
+         Console.ForegroundColor = ConsoleColor.Green;
+         Console.WriteLine("Press any key to exit...");
+         Console.Read();
       }
-      catch (Exception ex) {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine($"Error: {ex.Message}");
-      }
-      finally {
 
-        // make_fself.exeが存在する場合は、削除します。
-        if (File.Exists("make_fself.exe")) {
-          File.Delete("make_fself.exe");
-        }
+      private static void DependentExtract()
+      {
+         try {
+            if (File.Exists(DEPENDENT_PROCESS)) {
+               File.Delete(DEPENDENT_PROCESS);
+            }
+
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            using (Stream resource = assembly.GetManifestResourceStream($"ELFBuilder.Resources.{DEPENDENT_PROCESS}")) {
+               byte[] buffer = GetArray(resource);
+               using (FileStream fileStream = new FileStream(DEPENDENT_PROCESS, FileMode.CreateNew)) {
+                  fileStream.Write(buffer, 0, buffer.Length);
+                  fileStream.Flush();
+               }
+            }
+         }
+         catch (Exception ex) {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Error: {ex.Message}");
+         }
       }
 
-      Console.ForegroundColor = ConsoleColor.Green;
-      Console.WriteLine("Press any key to exit...");
-      Console.Read();
-    }
-  }
+      private static byte[] GetArray(Stream baseStream)
+      {
+         using (MemoryStream bufferStream = new MemoryStream()) {
+            baseStream.CopyTo(bufferStream);
+            return bufferStream.ToArray();
+         }
+      }
+   }
 }
