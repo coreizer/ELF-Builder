@@ -30,7 +30,11 @@ namespace ELFBuilder
 
    public class Program
    {
+      #region Constant
+
       private const string DEPENDENT_PROCESS = "make_fself.exe";
+
+      #endregion
 
       [MTAThread]
       public static void Main(string[] args)
@@ -84,7 +88,7 @@ namespace ELFBuilder
             }
          }
 
-         Console.ForegroundColor = ConsoleColor.Green;
+         Console.ForegroundColor = ConsoleColor.White;
          Console.WriteLine("Press any key to exit...");
          Console.Read();
       }
