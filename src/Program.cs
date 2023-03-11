@@ -51,22 +51,22 @@ namespace ELFBuilder
             if (args.Length < 1) {
                throw new Exception("Error: File cannot be found.");
             }
+
             if (!args.Any(x => Path.GetExtension(x) == ".elf")) {
                throw new FileLoadException("Error: Unable to open file or invalid the extension.");
             }
 
             DependentExtract();
 
-            foreach (string file in args) {
-               string name = Path.GetFileName(file);
-               string timestamp = $"{DateTime.Now.Ticks}--{Path.ChangeExtension(name, "")}bin";
+            foreach (var file in args) {
+               var name = Path.GetFileName(file);
+               var timestamp = $"{DateTime.Now.Ticks}--{Path.ChangeExtension(name, "")}bin";
 
                if (!File.Exists(DEPENDENT_PROCESS)) {
                   throw new FileNotFoundException(DEPENDENT_PROCESS);
                }
 
-               Process process = Process.Start(new ProcessStartInfo
-               {
+               var process = Process.Start(new ProcessStartInfo {
                   FileName = DEPENDENT_PROCESS,
                   WorkingDirectory = Application.StartupPath,
                   CreateNoWindow = false,
@@ -100,10 +100,10 @@ namespace ELFBuilder
                File.Delete(DEPENDENT_PROCESS);
             }
 
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            using (Stream resource = assembly.GetManifestResourceStream($"ELFBuilder.Resources.{DEPENDENT_PROCESS}")) {
-               byte[] buffer = GetArray(resource);
-               using (FileStream fileStream = new FileStream(DEPENDENT_PROCESS, FileMode.CreateNew)) {
+            var assembly = Assembly.GetExecutingAssembly();
+            using (var resource = assembly.GetManifestResourceStream($"ELFBuilder.Resources.{DEPENDENT_PROCESS}")) {
+               var buffer = GetArray(resource);
+               using (var fileStream = new FileStream(DEPENDENT_PROCESS, FileMode.CreateNew)) {
                   fileStream.Write(buffer, 0, buffer.Length);
                   fileStream.Flush();
                }
@@ -117,7 +117,7 @@ namespace ELFBuilder
 
       private static byte[] GetArray(Stream baseStream)
       {
-         using (MemoryStream bufferStream = new MemoryStream()) {
+         using (var bufferStream = new MemoryStream()) {
             baseStream.CopyTo(bufferStream);
             return bufferStream.ToArray();
          }
