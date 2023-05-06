@@ -32,7 +32,7 @@ namespace ELFBuilder
    {
       #region Constant
 
-      private const string DEPENDENT_PROCESS = "make_fself.exe";
+      private const string DependentProcess = "make_fself.exe";
 
       #endregion
 
@@ -62,12 +62,12 @@ namespace ELFBuilder
                var name = Path.GetFileName(file);
                var timestamp = $"{DateTime.Now.Ticks}--{Path.ChangeExtension(name, "")}bin";
 
-               if (!File.Exists(DEPENDENT_PROCESS)) {
-                  throw new FileNotFoundException(DEPENDENT_PROCESS);
+               if (!File.Exists(DependentProcess)) {
+                  throw new FileNotFoundException(DependentProcess);
                }
 
                var process = Process.Start(new ProcessStartInfo {
-                  FileName = DEPENDENT_PROCESS,
+                  FileName = DependentProcess,
                   WorkingDirectory = Application.StartupPath,
                   CreateNoWindow = false,
                   UseShellExecute = false,
@@ -83,8 +83,8 @@ namespace ELFBuilder
             Console.WriteLine($"Error: {ex.Message}");
          }
          finally {
-            if (File.Exists(DEPENDENT_PROCESS)) {
-               File.Delete(DEPENDENT_PROCESS);
+            if (File.Exists(DependentProcess)) {
+               File.Delete(DependentProcess);
             }
          }
 
@@ -96,14 +96,14 @@ namespace ELFBuilder
       private static void DependentExtract()
       {
          try {
-            if (File.Exists(DEPENDENT_PROCESS)) {
-               File.Delete(DEPENDENT_PROCESS);
+            if (File.Exists(DependentProcess)) {
+               File.Delete(DependentProcess);
             }
 
             var assembly = Assembly.GetExecutingAssembly();
-            using (var resource = assembly.GetManifestResourceStream($"ELFBuilder.Resources.{DEPENDENT_PROCESS}")) {
+            using (var resource = assembly.GetManifestResourceStream($"ELFBuilder.Resources.{DependentProcess}")) {
                var buffer = GetArray(resource);
-               using (var fileStream = new FileStream(DEPENDENT_PROCESS, FileMode.CreateNew)) {
+               using (var fileStream = new FileStream(DependentProcess, FileMode.CreateNew)) {
                   fileStream.Write(buffer, 0, buffer.Length);
                   fileStream.Flush();
                }
