@@ -4,14 +4,14 @@ The EBOOT.elf to EBOOT.bin convert build tools.
 
 ## 📦 How to use
 
-A. drop and drop the EBOOT.elf file.
-B. Launch and The any key to select file.
+- A. drop and drop the EBOOT.elf file.
+- B. Launch and The any key to select file.
 
 ## 🙏 Additional resources and thanks
 
-make_fself.exe - thanks for creating this application
+make_fself.exe - thanks for creating this application.
 
-## Author
+## 💻 Author
 
 coreizer
 
