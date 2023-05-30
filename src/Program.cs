@@ -36,7 +36,7 @@ namespace ELFBuilder
 
       #endregion
 
-      [MTAThread]
+      [STAThread]
       public static void Main(string[] args)
       {
          // Simple ELF to BIN Resigner
@@ -44,21 +44,15 @@ namespace ELFBuilder
          Console.WriteLine("+--------------------+");
          Console.WriteLine("| ELF-Builder        |");
          Console.WriteLine("| by coreizer        |");
-         Console.WriteLine("| Version 2.3[BETA]  |");
+         Console.WriteLine("| Version 2.3(BETA)  |");
          Console.WriteLine("+-------------------+\n");
 
          try {
-            if (args.Length < 1) {
-               throw new Exception("Error: File cannot be found.");
-            }
-
-            if (!args.Any(x => Path.GetExtension(x) == ".elf")) {
-               throw new FileLoadException("Error: Unable to open file or invalid the extension.");
-            }
+            var files = OpenFile(args);
 
             DependentExtract();
 
-            foreach (var file in args) {
+            foreach (var file in files) {
                var name = Path.GetFileName(file);
                var timestamp = $"{DateTime.Now.Ticks}--{Path.ChangeExtension(name, "")}bin";
 
@@ -91,6 +85,29 @@ namespace ELFBuilder
          Console.ForegroundColor = ConsoleColor.White;
          Console.WriteLine("Press any key to exit...");
          Console.Read();
+      }
+
+      private static string[] OpenFile(string[] args)
+      {
+         if (args.Length < 1) {
+            Console.WriteLine("Press any key to continue and Open a file dialog...");
+            Console.ReadKey();
+
+            using (var OFD = new OpenFileDialog {
+               Multiselect = true,
+               Filter = "Executable and Linking Format (*.elf)|*.elf"
+            }) {
+               if (OFD.ShowDialog() != DialogResult.OK) throw new Exception("Invalid the file or no file");
+
+               return OFD.FileNames;
+            }
+         }
+
+         if (!args.Any(x => Path.GetExtension(x) == ".elf")) {
+            throw new FileLoadException("Error: Unable to open file or invalid the extension.");
+         }
+
+         return args;
       }
 
       private static void DependentExtract()
