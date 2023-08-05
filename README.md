@@ -1,5 +1,3 @@
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/coreizer/ChatHub/tree/master.svg?style=svg&circle-token=8e9b8e671195f8a13aeb2cff2cd445d618ab2184)](https://dl.circleci.com/status-badge/redirect/gh/coreizer/ChatHub/tree/master)
-
 <div align="center">
 
   <h3 align="center">ELF-Builder</h3>
