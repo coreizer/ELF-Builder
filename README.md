@@ -15,7 +15,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li><a href="#📦-how-to-use">How to use</a></li>
-    <li><a href="#🙏-additional-resources-and-thanks">dditional resources and thanks</a></li>
+    <li><a href="#🙏-additional-resources-and-thanks">Additional resources and thanks</a></li>
     <li><a href="#💻-author">Author</a></li>
     <li><a href="#🌏-stay-in-touch">Stay In Touch</a></li>
     <li><a href="#📝-license">License</a></li>
