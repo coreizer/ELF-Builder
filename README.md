@@ -5,7 +5,7 @@
   <p>The EBOOT.elf to EBOOT.bin convert build tools.</p>
 
   <p align="center">
-    <a href="">Bug Reports</a>
+    <a href="">Report Bug</a>
     ・
     <a href="">Request Feature</a>
   </p>
