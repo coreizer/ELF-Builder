@@ -31,15 +31,15 @@
 
 make_fself.exe - thanks for creating this application.
 
-## 💻 Author
+## 👷 Author
 
-coreizer
+- coreizer
 
 ## 🌏 Stay In Touch
 
 - [coreizer.dev](https://www.coreizer.dev)
 - [Twitter](https://www.twitter.com/coreizer)
 
-## 📝 License
+## ⚖️ License
 
 This project is licensed under [GPL 3.0](https://opensource.org/license/lgpl-3-0/). See [License File](LICENSE) for details.
