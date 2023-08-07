@@ -5,7 +5,7 @@
   <p>The EBOOT.elf to EBOOT.bin convert build tools.</p>
 
   <p align="center">
-    <a href="">Bug Reports</a>
+    <a href="">Report Bug</a>
     ・
     <a href="">Request Feature</a>
   </p>
@@ -15,7 +15,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li><a href="#📦-how-to-use">How to use</a></li>
-    <li><a href="#🙏-additional-resources-and-thanks">dditional resources and thanks</a></li>
+    <li><a href="#🙏-additional-resources-and-thanks">Additional resources and thanks</a></li>
     <li><a href="#💻-author">Author</a></li>
     <li><a href="#🌏-stay-in-touch">Stay In Touch</a></li>
     <li><a href="#📝-license">License</a></li>
