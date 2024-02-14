@@ -36,16 +36,32 @@ namespace ELFBuilder
 
       #endregion
 
+      private static void AsciiHeader()
+      {
+         Console.ForegroundColor = ConsoleColor.Red;
+         Console.WriteLine(@"
+                                    d8b
+                                    Y8P          
+
+    .d8888b .d88b.  888d888 .d88b.  888 88888888 
+   d88P""   d88""""88b 888P""  d8P  Y8b 888    d88P  
+   888     888  888 888    88888888 888   d88P   
+   Y88b.   Y88..88P 888    Y8b.     888  d88P    
+    ""Y8888P ""Y88P""  888     ""Y8888  888 88888888
+");
+
+         Console.WriteLine("+--------------------+");
+         Console.WriteLine("| ELF-Builder        |");
+         Console.WriteLine("| by coreizer        |");
+         Console.WriteLine("| Version 2.4(BETA)  |");
+         Console.WriteLine("+-------------------+\n");
+      }
+
       [STAThread]
       public static void Main(string[] args)
       {
          // Simple ELF to BIN Resigner
-         Console.ForegroundColor = ConsoleColor.Green;
-         Console.WriteLine("+--------------------+");
-         Console.WriteLine("| ELF-Builder        |");
-         Console.WriteLine("| by coreizer        |");
-         Console.WriteLine("| Version 2.3(BETA)  |");
-         Console.WriteLine("+-------------------+\n");
+         AsciiHeader();
 
          try {
             var files = OpenFile(args);
@@ -119,9 +135,9 @@ namespace ELFBuilder
 
             var assembly = Assembly.GetExecutingAssembly();
             using (var resource = assembly.GetManifestResourceStream($"ELFBuilder.Resources.{DependentProcess}")) {
-               var buffer = GetArray(resource);
+               var buf = GetArray(resource);
                using (var fileStream = new FileStream(DependentProcess, FileMode.CreateNew)) {
-                  fileStream.Write(buffer, 0, buffer.Length);
+                  fileStream.Write(buf, 0, buf.Length);
                   fileStream.Flush();
                }
             }
@@ -134,9 +150,9 @@ namespace ELFBuilder
 
       private static byte[] GetArray(Stream baseStream)
       {
-         using (var bufferStream = new MemoryStream()) {
-            baseStream.CopyTo(bufferStream);
-            return bufferStream.ToArray();
+         using (var ms = new MemoryStream()) {
+            baseStream.CopyTo(ms);
+            return ms.ToArray();
          }
       }
    }
